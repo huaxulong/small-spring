@@ -17,6 +17,7 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
     private Map<String, Object> singletonObjects = new HashMap<>();
 
+    // destroy method bean 对应的方法。
     private final Map<String, DisposableBean> disposableBeans = new HashMap<>();
 
     @Override

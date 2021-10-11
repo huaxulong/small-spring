@@ -2,8 +2,10 @@ package cn.bugstack.springframework.test;
 
 import cn.bugstack.springframework.beans.PropertyValue;
 import cn.bugstack.springframework.beans.PropertyValues;
+import cn.bugstack.springframework.beans.factory.BeanFactory;
 import cn.bugstack.springframework.beans.factory.config.BeanDefinition;
 import cn.bugstack.springframework.beans.factory.config.BeanReference;
+import cn.bugstack.springframework.beans.factory.support.BeanDefinitionRegistry;
 import cn.bugstack.springframework.beans.factory.support.DefaultListableBeanFactory;
 import cn.bugstack.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import cn.bugstack.springframework.core.io.DefaultResourceLoader;

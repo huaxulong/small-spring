@@ -64,7 +64,7 @@ public class ApiTest {
     public void test_parameterTypes() throws Exception {
         Class<UserService> beanClass = UserService.class;
         Constructor<?>[] declaredConstructors = beanClass.getDeclaredConstructors();
-        Constructor<?> constructor = declaredConstructors[0];
+        Constructor<?> constructor = declaredConstructors[1];
         Constructor<UserService> declaredConstructor = beanClass.getDeclaredConstructor(constructor.getParameterTypes());
         UserService userService = declaredConstructor.newInstance("小傅哥");
         System.out.println(userService);
