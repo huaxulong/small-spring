@@ -10,6 +10,7 @@ import cn.bugstack.springframework.aop.framework.ReflectiveMethodInvocation;
 import cn.bugstack.springframework.test.bean.IUserService;
 import cn.bugstack.springframework.test.bean.UserService;
 import cn.bugstack.springframework.test.bean.UserServiceInterceptor;
+import cn.hutool.aop.proxy.ProxyFactory;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.junit.Test;
 
@@ -37,6 +38,7 @@ public class ApiTest {
 
     @Test
     public void test_dynamic() {
+
         // 目标对象
         IUserService userService = new UserService();
         // 组装代理信息
@@ -63,6 +65,14 @@ public class ApiTest {
         System.out.println("测试结果：" + result);
 
     }
+
+    @Test
+    public void test_proxy_class02() {
+        IUserService userService = (IUserService) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[]{IUserService.class}, new WorkHandler(new UserService()));
+        String result = userService.queryUserInfo();
+        System.out.println("测试结果：" + result);
+    }
+
 
     @Test
     public void test_proxy_method() {
@@ -97,6 +107,25 @@ public class ApiTest {
         });
 
         String result = proxy.queryUserInfo();
+        System.out.println("测试结果：" + result);
+    }
+
+    @Test
+    public void test_cglib_method() {
+        // 目标对象
+        Object targetObj = new UserService();
+
+        // 组装代理信息
+        AdvisedSupport advisedSupport = new AdvisedSupport();
+        advisedSupport.setTargetSource(new TargetSource(targetObj));
+        advisedSupport.setMethodInterceptor(new UserServiceInterceptor());
+        advisedSupport.setMethodMatcher(new AspectJExpressionPointcut("execution(* cn.bugstack.springframework.test.bean.IUserService.*(..))"));
+
+        Cglib2AopProxy cglib2AopProxy = new Cglib2AopProxy(advisedSupport);
+
+        IUserService userService = (IUserService)cglib2AopProxy.getProxy();
+
+        String result = userService.queryUserInfo();
         System.out.println("测试结果：" + result);
 
     }

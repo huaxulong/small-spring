@@ -27,4 +27,18 @@ public class ApiTest {
 
     }
 
+    @Test
+    public void hookTest() {
+        System.out.println("开始执行主方法");
+
+        // 注册退出钩子方法， 对应spring 中 destory 方法的执行逻辑
+        Runtime.getRuntime().addShutdownHook(new Thread(this::hook));
+
+        System.out.println("退出执行主方法");
+    }
+
+    public void hook() {
+        System.out.println("执行了 退出的钩子方法 ----->>>>  已经执行！！！");
+    }
+
 }

@@ -9,6 +9,14 @@ import java.util.Map;
 
 public class ProxyBeanFactory implements FactoryBean<IUserDao> {
 
+    public void init() {
+        System.out.println("执行了 init() 方法");
+    }
+
+    public void destory() {
+        System.out.println("执行了 destory() 方法");
+    }
+
     @Override
     public IUserDao getObject() throws Exception {
         InvocationHandler handler = (proxy, method, args) -> {
@@ -18,7 +26,7 @@ public class ProxyBeanFactory implements FactoryBean<IUserDao> {
             
             Map<String, String> hashMap = new HashMap<>();
             hashMap.put("10001", "小傅哥");
-            hashMap.put("10002", "八杯水");
+            hashMap.put("10002", "华翔");
             hashMap.put("10003", "阿毛");
             
             return "你被代理了 " + method.getName() + "：" + hashMap.get(args[0].toString());
