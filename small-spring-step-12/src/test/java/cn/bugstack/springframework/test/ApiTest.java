@@ -46,7 +46,7 @@ public class ApiTest {
 
     @Test
     public void test_proxyFactory() {
-        advisedSupport.setProxyTargetClass(false); // false/true，JDK动态代理、CGlib动态代理
+        advisedSupport.setProxyTargetClass(true); // false/true，JDK动态代理、CGlib动态代理
         IUserService proxy = (IUserService) new ProxyFactory(advisedSupport).getProxy();
 
         System.out.println("测试结果：" + proxy.queryUserInfo());
