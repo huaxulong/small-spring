@@ -46,6 +46,7 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
     @Override
     public Object getSingleton(String beanName) {
+        // 验证一级缓存中是否存在该bean 对象
         Object singletonObject = singletonObjects.get(beanName);
         if (null == singletonObject) {
             singletonObject = earlySingletonObjects.get(beanName);
@@ -69,6 +70,7 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
         singletonFactories.remove(beanName);
     }
 
+    // 当已经在一级缓存中不存在该数据了， 那么三级缓存数据添加上， 并且将二级缓存数据清空。
     protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory){
         if (!this.singletonObjects.containsKey(beanName)) {
             this.singletonFactories.put(beanName, singletonFactory);
