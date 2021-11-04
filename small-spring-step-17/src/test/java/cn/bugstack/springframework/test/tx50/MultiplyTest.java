@@ -15,7 +15,7 @@ public class MultiplyTest {
                 int base2 = getInt(num2.charAt(j));
                 int sum = base * base2 + jinwei;
                 int remainder = sum % 10;
-                jinwei =
+                jinwei = 0;
                 jinwei = jinwei * 10;
             }
         }
