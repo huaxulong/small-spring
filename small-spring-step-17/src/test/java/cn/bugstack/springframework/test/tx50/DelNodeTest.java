@@ -12,21 +12,6 @@ import org.junit.Test;
 public class DelNodeTest {
 
 
-
-    public class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-
-        ListNode(int x, ListNode node){
-            val = x;
-            next = node;
-        }
-    }
-
     public void deleteNode(ListNode temHead, ListNode node) {
         while (temHead != null){
             if (temHead.next != null){
