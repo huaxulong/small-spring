@@ -13,60 +13,54 @@ import org.junit.Test;
 public class AtoiTest {
 
     public int myAtoi(String s) {
-        // 标识第一个有效数字 或者有效符号。
-        boolean flag = false;
-        String base = "";
+        int len = s.length();
+        // str.charAt(i) 方法回去检查下标的合法性，一般先转换成字符数组
+        char[] charArray = s.toCharArray();
 
-        for (int i = 0; i < s.length(); i++) {
-            // 无用字符的情况
-            if (s.charAt(i) != 45 && (s.charAt(i) < 48 || s.charAt(i) > 58)){
-                continue;
+        // 1、去除前导空格
+        int index = 0;
+        while (index < len && charArray[index] == ' ') {
+            index++;
+        }
+
+        // 2、如果已经遍历完成（针对极端用例 "      "）
+        if (index == len) {
+            return 0;
+        }
+
+        // 3、如果出现符号字符，仅第 1 个有效，并记录正负
+        int sign = 1;
+        char firstChar = charArray[index];
+        if (firstChar == '+') {
+            index++;
+        } else if (firstChar == '-') {
+            index++;
+            sign = -1;
+        }
+
+        // 4、将后续出现的数字字符进行转换
+        // 不能使用 long 类型，这是题目说的
+        int res = 0;
+        while (index < len) {
+            char currChar = charArray[index];
+            // 4.1 先判断不合法的情况
+            if (currChar > '9' || currChar < '0') {
+                break;
             }
-            if (!flag && (45 == s.charAt(i) || (48 < s.charAt(i) && s.charAt(i) <= 57))){
-                flag = true;
+
+            // 题目中说：环境只能存储 32 位大小的有符号整数，因此，需要提前判：断乘以 10 以后是否越界
+            if (res > Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE / 10 && (currChar - '0') > Integer.MAX_VALUE % 10)) {
+                return Integer.MAX_VALUE;
             }
-            // 0 ~ 9 ,
-            if (45 == s.charAt(i) || ((48 <= s.charAt(i)  && s.charAt(i) <= 57) && flag)){
-                if (base.equals("") && s.charAt(i) == 45) {
-                    base = "-";
-                }else if(s.charAt(i) == 45){
-                    continue;
-                }else if(base.equals("-") && s.charAt(i) == 48) {
-                    continue;
-                }else if (base.equals("-")){
-                    base = base + (s.charAt(i) - 48);
-                }
-                else{
-                    String temp = base;
-                    base = getBase(base, s.charAt(i));
-
-                    if (testRange(base)){
-                        return Integer.valueOf(temp);
-                    }
-                }
+            if (res < Integer.MIN_VALUE / 10 || (res == Integer.MIN_VALUE / 10 && (currChar - '0') > -(Integer.MIN_VALUE % 10))) {
+                return Integer.MIN_VALUE;
             }
-        }
-        return Integer.valueOf(base);
-    }
 
-    private String getBase(String base, char char1) {
-        if (base.equals("")){
-            return String.valueOf(char1 - 48);
+            // 4.2 合法的情况下，才考虑转换，每一步都把符号位乘进去
+            res = res * 10 + sign * (currChar - '0');
+            index++;
         }
-        if (Long.valueOf(base) < 0){
-            base = String.valueOf(Long.valueOf(base) * 10 - char1 + 48);
-        }else {
-            base = String.valueOf(Long.valueOf(base) * 10 + char1 - 48);
-        }
-        return base;
-    }
-
-    private boolean testRange(String base) {
-        Long count = Long.valueOf(base);
-        if (count >= Integer.MAX_VALUE || count <= Integer.MIN_VALUE ){
-            return true;
-        }
-        return false;
+        return res;
     }
 
     @Test
